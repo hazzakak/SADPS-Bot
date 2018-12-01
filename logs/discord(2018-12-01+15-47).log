@@ -1,4 +1,0 @@
-2018-12-01 15:47:40,489:INFO:discord.client: logging in using static token
-2018-12-01 15:47:41,067:INFO:discord.gateway: Created websocket connected to wss://gateway.discord.gg?encoding=json&v=6&compress=zlib-stream
-2018-12-01 15:47:41,069:INFO:discord.gateway: Shard ID None has sent the IDENTIFY payload.
-2018-12-01 15:47:41,216:INFO:discord.gateway: Shard ID None has connected to Gateway: gateway-prd-main-ncd7, discord-sessions-prd-1-5 (Session ID: a169a622386adefd7577bbba6e5d802e).
