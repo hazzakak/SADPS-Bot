@@ -22,7 +22,7 @@ logger.addHandler(handler)
 extensions = ['moderate', 'events', 'general',
               'sounds', 'money', 'testing', 'fun', 'ranks']
 
-token = "NTA3NTU4MTM2MjkxNTI0NjEx.DryjWA.Bn0D4lTv4eUFfDHABw3bhw4B8lA"
+token = "TOKEN"
 client = commands.Bot(command_prefix="~")
 client.remove_command('help')
 players = {}
