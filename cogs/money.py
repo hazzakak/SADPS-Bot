@@ -32,19 +32,6 @@ class Money:
             await channel.send("You don't have a ticket!")
             print("{0} attempted to pay a nonexistent ticket.".format(offender))
 
-    async def on_command_error(self, ctx, error):
-        channel = ctx.message.channel
-        error = getattr(error, 'original', error)
-        if isinstance(error, discord.ext.commands.errors.MissingRequiredArgument):
-            await ctx.send(":x: A required argument is missing.")
-        elif isinstance(error, commands.CommandOnCooldown):
-            return await ctx.send("You can not do more than one priority in 30 minutes!")
-        else:
-            print('Ignoring exception in command {}:'.format(
-                ctx.command), file=sys.stderr)
-            traceback.print_exception(
-                type(error), error, error.__traceback__, file=sys.stderr)
-
 
 def setup(bot):
     bot.add_cog(Money(bot))

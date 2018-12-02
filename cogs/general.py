@@ -78,8 +78,7 @@ class General:
     def __init__(self, bot):
         self.bot = bot
 
-    def is_staff(ctx):
-        channel = ctx.message.channel
+    def is_staff(self, ctx):
         author = ctx.message.author
         if discord.utils.get(author.roles, name="Staff"):
             return True
@@ -91,7 +90,6 @@ class General:
         print('RPStart command used by: ' + str(ctx.message.author))
         if disabled is False:
             await channel.send("@everyone rp is starting join RP staging!")
-            bot.inrp = True
         else:
             await channel.send("This command is disabled :open_mouth:")
 

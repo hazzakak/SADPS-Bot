@@ -1,5 +1,7 @@
 import discord
 import time
+import sys
+import traceback
 from discord.ext import commands
 import logging
 
@@ -25,6 +27,22 @@ class Events:
                 await message.author.send('Hello there!')
         else:
             pass
+
+    async def on_command_error(self, ctx, error):
+        error = getattr(error, 'original', error)
+        harry = discord.utils.get(ctx.guild.members, id=302454373882003456)
+        if isinstance(error, discord.ext.commands.errors.MissingRequiredArgument):
+            await ctx.send(":x: A required argument is missing.")
+        elif isinstance(error, commands.CommandOnCooldown):
+            return await ctx.send("You can not do more than one priority in 30 minutes!")
+        else:
+            await ctx.send("Oops, an error has occured.")
+            await harry.send(
+                "An error occured with the command: `{}` when being used by `{}`".format(ctx.command, ctx.author))
+            print('Ignoring exception in command {}:'.format(
+                ctx.command), file=sys.stderr)
+            traceback.print_exception(
+                type(error), error, error.__traceback__, file=sys.stderr)
 
 
 def setup(bot):

@@ -25,7 +25,6 @@ class Moderate:
     @commands.command(pass_context=True)
     async def ping(self, ctx):
         channel = ctx.message.channel
-        ping = str(self.bot.latency * 10)
         print('Ping command used by: ' + str(ctx.message.author))
         embed = discord.Embed(
             title='Ping',

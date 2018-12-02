@@ -1,6 +1,7 @@
+import asyncio
+
 import discord
 from discord.ext import commands
-import asyncio
 
 
 class Sounds:
@@ -19,7 +20,6 @@ class Sounds:
         channel_text = ctx.message.channel
         author = str(ctx.message.author)
         print('Pager command used by: ' + author)
-        server = ctx.message.guild
         if not ctx.message.author.voice:
             await channel_text.send('You are not in a voice channel!')
         else:
