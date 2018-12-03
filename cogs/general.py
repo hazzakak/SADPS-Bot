@@ -66,7 +66,7 @@ help2 = [
     }
 ]
 
-help2 = [
+help3 = [
     {
         'command_name': '~remove_ranks **Staff Command** (*or ~rem-rank*)',
         'description': '`Removes everyones active roles!`'
@@ -143,10 +143,18 @@ class General:
                 embed.add_field(
                     name=command['command_name'], value=command['description'], inline=False)
             embed.add_field(
+                name="~help 3", value="for the next page", inline=False)
+            await ctx.author.send(embed=embed)
+            await channel.send('You have been private messaged the help list.')
+        elif page == 3:
+            for command in help3:
+                embed.add_field(
+                    name=command['command_name'], value=command['description'], inline=False)
+            embed.add_field(
                 name="Last page", value="Last page of the help list", inline=False)
             await ctx.author.send(embed=embed)
             await channel.send('You have been private messaged the help list.')
-        elif page > 2:
+        elif page > 3:
             await ctx.send("There isn't a page {}.".format(page))
 
     @commands.cooldown(1, 1800, commands.BucketType.guild)

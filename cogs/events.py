@@ -35,6 +35,8 @@ class Events:
             await ctx.send(":x: A required argument is missing.")
         elif isinstance(error, commands.CommandOnCooldown):
             return await ctx.send("You can not do more than one priority in 30 minutes!")
+        elif isinstance(error, discord.ext.commands.errors.CommandNotFound):
+            await ctx.send("{} does not exist, use ~help if you're having trouble with any commands.".format())
         else:
             await ctx.send("Oops, an error has occured.")
             await harry.send(
