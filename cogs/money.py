@@ -11,6 +11,7 @@ class Money:
         self.bot = bot
 
     @commands.command()
+    @commands.guild_only()
     async def ticket(self, ctx, fineAmount, fineTarget: discord.Member, *, characterName):
         channel = ctx.message.channel
         role = ctx.guild.get_role(513653523905380372)
@@ -20,6 +21,7 @@ class Money:
         await fineTarget.send("Your character {0} has been fined ${1}. To pay off this fine do `/ pay(~)SADPS {1}` and after that do `~ticketpaid`.".format(characterName, fineAmount))
 
     @commands.command()
+    @commands.guild_only()
     async def ticketpaid(self, ctx):
         channel = ctx.message.channel
         offender = ctx.message.author

@@ -9,6 +9,7 @@ class Moderate:
         self.bot = bot
 
     @commands.command(pass_context=True)
+    @commands.guild_only()
     async def clear(self, ctx, amount=2):
         channel = ctx.message.channel
         messages = []
@@ -23,6 +24,7 @@ class Moderate:
             await channel.send('You do not have permission to use this command.')
 
     @commands.command(pass_context=True)
+    @commands.guild_only()
     async def ping(self, ctx):
         channel = ctx.message.channel
         print('Ping command used by: ' + str(ctx.message.author))
@@ -38,6 +40,7 @@ class Moderate:
         await channel.send(embed=embed)
 
     @commands.command(pass_context=True)
+    @commands.guild_only()
     async def echo(self, ctx, *args):
         channel = ctx.message.channel
         author = ctx.message.author
@@ -62,6 +65,7 @@ class Moderate:
             await channel.send('You do not have permission to use this command.')
 
     @commands.command(pass_context=True)
+    @commands.guild_only()
     async def kick(self, ctx, user: discord.Member, *, reason):
         channel = ctx.message.channel
         author = ctx.message.author

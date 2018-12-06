@@ -84,6 +84,7 @@ class General:
             return True
 
     @commands.command(pass_context=True)
+    @commands.guild_only()
     async def rpstart(self, ctx):
         disabled = False
         channel = ctx.message.channel
@@ -94,6 +95,7 @@ class General:
             await channel.send("This command is disabled :open_mouth:")
 
     @commands.command(pass_context=True)
+    @commands.guild_only()
     async def rpover(self, ctx):
         channel = ctx.message.channel
         author = str(ctx.message.author)
@@ -105,6 +107,7 @@ class General:
             await channel.send("This command is disabled :open_mouth:")
 
     @commands.command(pass_context=True)
+    @commands.guild_only()
     async def rpjoin(self, ctx):
         channel = ctx.message.channel
         author = str(ctx.message.author)
@@ -116,6 +119,7 @@ class General:
             await channel.send("This command is disabled :open_mouth:")
 
     @commands.command(pass_context=True)
+    @commands.guild_only()
     async def help(self, ctx, page: int = 1):
         author = str(ctx.message.author)
         channel = ctx.message.channel
@@ -159,6 +163,7 @@ class General:
 
     @commands.cooldown(1, 1800, commands.BucketType.guild)
     @commands.command()
+    @commands.guild_only()
     async def priority(self, ctx):
         channel = ctx.message.channel
         author = str(ctx.message.author)
@@ -172,6 +177,7 @@ class General:
             await channel.send("This command can only be used in the main server!")
 
     @commands.command()
+    @commands.guild_only()
     async def reset_priority(self, ctx):
         channel = ctx.message.channel
         if discord.utils.get(ctx.author.roles, name="Staff"):
@@ -181,6 +187,7 @@ class General:
                 ctx.message.author))
 
     @commands.command(name="911")
+    @commands.guild_only()
     async def nine(self, ctx, *, reason):
         channel = ctx.message.channel
         dispatch = ctx.guild.get_role(515649817998000139)
@@ -191,6 +198,7 @@ class General:
             print("911 command used by {0}".format(ctx.message.author))
 
     @commands.command()
+    @commands.guild_only()
     async def urm(self, ctx):
         channel = ctx.message.channel
         await channel.send("Jen stop being weird, if it isn't Jen.. stop being weird.")

@@ -9,11 +9,13 @@ class Sounds:
         self.bot = bot
 
     @commands.command()
+    @commands.guild_only()
     async def soundtest(self, ctx):
         channel = ctx.message.author.voice.channel
         await channel.connect()
 
     @commands.command()
+    @commands.guild_only()
     async def pager(self, ctx):
         source = discord.PCMVolumeTransformer(
             discord.FFmpegPCMAudio('/root/bot/cogs/Sounds/pager.mp3'))
@@ -31,6 +33,7 @@ class Sounds:
             await vc.disconnect()
 
     @commands.command(aliases=['dis'])
+    @commands.guild_only()
     async def disconnect(self, ctx):
         await ctx.voice_client.disconnect()
 
