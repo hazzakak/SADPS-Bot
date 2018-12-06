@@ -9,6 +9,7 @@ class Ranks:
         self.bot = bot
 
     @commands.command(aliases=['officer', 'cop'])
+    @commands.guild_only()
     async def leo(self, ctx):
         leo = discord.utils.get(ctx.guild.roles, name="Active Officer")
         print("{} used the LEO command".format(ctx.author))
@@ -23,6 +24,7 @@ class Ranks:
             await ctx.send("There is no role called 'Active Officer'")
 
     @commands.command(aliases=['civ'])
+    @commands.guild_only()
     async def civilian(self, ctx):
         civ = discord.utils.get(ctx.guild.roles, name="Active Civilian")
         print("{} used the civ command".format(ctx.author))
@@ -37,6 +39,7 @@ class Ranks:
             await ctx.send("There is no role called 'Active Civilian'")
 
     @commands.command(aliases=['fire', 'medic', 'medical'])
+    @commands.guild_only()
     async def ems(self, ctx):
         ems = discord.utils.get(ctx.guild.roles, name="Active EMS")
         print("{} used the ems command".format(ctx.author))
@@ -51,6 +54,7 @@ class Ranks:
             await ctx.send("There is no role called 'Active EMS'")
 
     @commands.command(aliases=['people'])
+    @commands.guild_only()
     async def ratio(self, ctx):
         leo = discord.utils.get(ctx.guild.roles, name="Active Officer")
         civ = discord.utils.get(ctx.guild.roles, name="Active Civilian")
@@ -71,6 +75,7 @@ class Ranks:
         await ctx.send("There is {0} Cops, {1} Civilians, {2} SAFD and {3} dispatchers".format(leo, civ, ems, dispatch))
 
     @commands.command(aliases=['rem-rank'])
+    @commands.guild_only()
     async def remove_ranks(self, ctx):
         leo = discord.utils.get(ctx.guild.roles, name="Active Officer")
         leo_members = leo.members

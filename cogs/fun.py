@@ -10,6 +10,7 @@ class Fun:
         self.bot = bot
 
     @commands.command()
+    @commands.guild_only()
     async def coin(self, ctx):
         channel = ctx.message.channel
         toss = random.randint(0, 1)
@@ -21,6 +22,7 @@ class Fun:
             await channel.send("Tails :(")
 
     @commands.command()
+    @commands.guild_only()
     async def blame(self, ctx):
         print("{} has used the blame command".format(ctx.author))
         await ctx.send("What has Adam done now :rolling_eyes:")
