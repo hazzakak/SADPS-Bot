@@ -197,13 +197,6 @@ class General:
             await channel.send("{0} a 911 call has been initiated: {1}".format(dispatch.mention, reason))
             print("911 command used by {0}".format(ctx.message.author))
 
-    @commands.command()
-    @commands.guild_only()
-    async def urm(self, ctx):
-        channel = ctx.message.channel
-        await channel.send("Jen stop being weird, if it isn't Jen.. stop being weird.")
-        print("{0} has used the URM command".format(ctx.message.author))
-
 
 def setup(bot):
     bot.add_cog(General(bot))
