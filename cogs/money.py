@@ -1,9 +1,5 @@
 import discord
-import time
-import traceback
-import sys
 from discord.ext import commands
-import logging
 
 
 class Money:
@@ -18,7 +14,9 @@ class Money:
         print("{0} has been given a ticket.".format(fineTarget))
         await channel.send("{0} has been fined ${1}".format(fineTarget, fineAmount))
         await fineTarget.add_roles(role, reason="For the fine", atomic=True)
-        await fineTarget.send("Your character {0} has been fined ${1}. To pay off this fine do `/ pay(~)SADPS {1}` and after that do `~ticketpaid`.".format(characterName, fineAmount))
+        await fineTarget.send(
+            f"Your character {characterName} has been fined ${fineAmount}. To pay off this fine do `/ pay(~)SADPS"
+            " {fineAmount}` and after that do `~ticketpaid`.")
 
     @commands.command()
     @commands.guild_only()

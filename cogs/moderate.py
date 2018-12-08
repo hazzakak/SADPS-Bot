@@ -1,7 +1,5 @@
 import discord
-import time
 from discord.ext import commands
-import logging
 
 
 class Moderate:
@@ -74,7 +72,7 @@ class Moderate:
         if discord.utils.get(author.roles, name="Staff"):
             if guild.id == 473977440603996164:
                 if user == author:
-                    await channel.send("You cannot kick youself, thats daft.")
+                    await channel.send("You cannot kick yourself, that's daft.")
                 else:
                     await user.send("You have been kicked because of: {0}".format(reason))
                     await author.send('You have kicked {0}'.format(user))
