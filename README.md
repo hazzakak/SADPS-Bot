@@ -15,6 +15,10 @@ then do
 ```pipenv sync``` 
 to install all the packages.
 To run the bot change the token and do ```pipenv run py bot.py```
+#### Packages
+- pynacl
+- datetime
+- discord.py (python3 -m pip install -U https://github.com/Rapptz/discord.py/archive/master.zip#egg=discord.py[voice])
 
 ## Commands
 - ~rpstart
