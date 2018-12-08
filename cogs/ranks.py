@@ -1,7 +1,5 @@
 import discord
-import time
 from discord.ext import commands
-import logging
 
 
 class Ranks:
@@ -15,10 +13,10 @@ class Ranks:
         print("{} used the LEO command".format(ctx.author))
         if discord.utils.get(ctx.guild.roles, name="Active Officer"):
             if discord.utils.get(ctx.author.roles, name="Active Officer"):
-                await ctx.author.remove_roles(leo, reason="LEO Command recieved.")
+                await ctx.author.remove_roles(leo, reason="LEO Command received.")
                 await ctx.send("{}, you have signed out of active duty.".format(ctx.author))
             else:
-                await ctx.author.add_roles(leo, reason="LEO command recieved.")
+                await ctx.author.add_roles(leo, reason="LEO command received.")
                 await ctx.send("{}, you have logged in to active duty.".format(ctx.author))
         else:
             await ctx.send("There is no role called 'Active Officer'")
@@ -30,10 +28,10 @@ class Ranks:
         print("{} used the civ command".format(ctx.author))
         if discord.utils.get(ctx.guild.roles, name="Active Civilian"):
             if discord.utils.get(ctx.author.roles, name="Active Civilian"):
-                await ctx.author.remove_roles(civ, reason="Civ Command recieved.")
+                await ctx.author.remove_roles(civ, reason="Civ Command received.")
                 await ctx.send("{}, you have signed out of LifeInvader.".format(ctx.author))
             else:
-                await ctx.author.add_roles(civ, reason="Civ command recieved.")
+                await ctx.author.add_roles(civ, reason="Civ command received.")
                 await ctx.send("{}, you have logged in to LifeInvader".format(ctx.author))
         else:
             await ctx.send("There is no role called 'Active Civilian'")
@@ -45,10 +43,10 @@ class Ranks:
         print("{} used the ems command".format(ctx.author))
         if discord.utils.get(ctx.guild.roles, name="Active EMS"):
             if discord.utils.get(ctx.author.roles, name="Active EMS"):
-                await ctx.author.remove_roles(ems, reason="EMS Command recieved.")
+                await ctx.author.remove_roles(ems, reason="EMS Command received.")
                 await ctx.send("{}, you have signed out of active duty.".format(ctx.author))
             else:
-                await ctx.author.add_roles(ems, reason="LEO command recieved.")
+                await ctx.author.add_roles(ems, reason="LEO command received.")
                 await ctx.send("{}, you have logged in to active duty.".format(ctx.author))
         else:
             await ctx.send("There is no role called 'Active EMS'")

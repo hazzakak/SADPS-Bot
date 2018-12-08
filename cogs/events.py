@@ -3,22 +3,17 @@ import time
 import sys
 import traceback
 from discord.ext import commands
-import logging
 
 
 class Events:
     def __init__(self, bot):
         self.bot = bot
 
-    def sadps_server(self, member):
-        return member.guild.id
-
     async def on_member_join(self, member):
         if member.guild.id == 473977440603996164:
             time.sleep(2)
             print(str(member) + ' has been messaged')
             await member.send('Hello there! Be sure to head of to the general chat if you have any questions, to apply go to #apply-here and and follow the instructions. Applications should take from 1-48 hours so please be patient!')
-            # await member.send('Hello there! Be sure to head of to the general chat if you have any questions, to apply go to #apply-here and and follow the instructions. Applications should take from 1-48 hours so please be patient!')
 
     async def on_message(self, message):
         if message.guild is None:
@@ -36,11 +31,11 @@ class Events:
         elif isinstance(error, commands.CommandOnCooldown):
             return await ctx.send("You can not do more than one priority in 30 minutes!")
         elif isinstance(error, discord.ext.commands.CommandNotFound):
-            await ctx.send("{} does not exist, use ~help if you're having trouble with any commands.".format())
+            await ctx.send("{} does not exist, use ~help if you're having trouble with any commands.".format(ctx.command))
         else:
-            await ctx.send("Oops, an error has occured.")
+            await ctx.send("Oops, an error has occurred.")
             await harry.send(
-                "An error occured with the command: `{}` when being used by `{}`".format(ctx.command, ctx.author))
+                "An error occurred with the command: `{}` when being used by `{}`".format(ctx.command, ctx.author))
             print('Ignoring exception in command {}:'.format(
                 ctx.command), file=sys.stderr)
             traceback.print_exception(

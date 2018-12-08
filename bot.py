@@ -1,13 +1,10 @@
 import asyncio
 import logging
-import time
 from datetime import datetime
 
 import discord
-import youtube_dl
 from discord.ext import commands
-from discord.ext.commands import Bot
-from discord.voice_client import VoiceClient
+import config as cfg
 
 now = datetime.now().strftime("%Y-%m-%d+%H-%M")
 log_name = f'logs/discord({now}).log'
@@ -23,7 +20,7 @@ logger.addHandler(handler)
 extensions = ['moderate', 'events', 'general',
               'sounds', 'money', 'testing', 'fun', 'ranks']
 
-token = ""
+token = cfg.token
 client = commands.Bot(command_prefix="~", case_insensitive=True)
 client.remove_command('help')
 players = {}

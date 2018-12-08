@@ -1,10 +1,5 @@
 import discord
-import time
 from discord.ext import commands
-import logging
-from discord.ext.commands.cooldowns import BucketType
-import traceback
-import sys
 
 help1 = [
     {
@@ -124,7 +119,6 @@ class General:
         author = str(ctx.message.author)
         channel = ctx.message.channel
         print('Help command used by: ' + author)
-        author = ctx.message.author
         embed = discord.Embed(
             title='Help',
             colour=discord.Colour.blue()
@@ -191,8 +185,8 @@ class General:
     async def nine(self, ctx, *, reason):
         channel = ctx.message.channel
         dispatch = ctx.guild.get_role(515649817998000139)
-        if dispatch == None:
-            await channel.send("The dispatcher role doesn not exist, command cannot be excecuted.")
+        if dispatch is None:
+            await channel.send("The dispatcher role doesn't not exist, command cannot be executed.")
         else:
             await channel.send("{0} a 911 call has been initiated: {1}".format(dispatch.mention, reason))
             print("911 command used by {0}".format(ctx.message.author))
