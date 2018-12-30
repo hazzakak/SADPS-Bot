@@ -26,7 +26,7 @@ class Events:
     async def on_command_error(self, ctx, error):
         error = getattr(error, 'original', error)
         harry = discord.utils.get(ctx.guild.members, id=302454373882003456)
-        if isinstance(error, discord.ext.commands.errors.MissingRequiredArgument:
+        if isinstance(error, discord.ext.commands.errors.MissingRequiredArgument):
             await ctx.send(":x: A required argument is missing.")
         elif isinstance(error, commands.CommandOnCooldown):
             return await ctx.send(
