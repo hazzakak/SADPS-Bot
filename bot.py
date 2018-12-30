@@ -6,6 +6,7 @@ import discord
 from discord.ext import commands
 import config as cfg
 
+
 now = datetime.now().strftime("%Y-%m-%d+%H-%M")
 log_name = f'logs/discord({now}).log'
 

@@ -11,6 +11,7 @@ class Ranks:
     async def leo(self, ctx):
         leo = discord.utils.get(ctx.guild.roles, name="Active Officer")
         print("{} used the LEO command".format(ctx.author))
+        # Check if the server has role active {}
         if discord.utils.get(ctx.guild.roles, name="Active Officer"):
             if discord.utils.get(ctx.author.roles, name="Active Officer"):
                 await ctx.author.remove_roles(leo, reason="LEO Command received.")
@@ -21,11 +22,30 @@ class Ranks:
         else:
             await ctx.send("There is no role called 'Active Officer'")
 
+    @commands.command(aliases=['comms', 'communication', 'communications', 'disp', 'dispatcher'])
+    @commands.guild_only()
+    async def dispatch(self, ctx):
+        dispatch = discord.utils.get(
+            ctx.guild.roles, name="Active Communicator")
+        print("{} used the comms command".format(ctx.author))
+        # Check if the server has role active {}
+        if discord.utils.get(ctx.guild.roles, name="Active Communicator"):
+            # If user has role 'active communicator' remove it.
+            if discord.utils.get(ctx.author.roles, name="Active Communicator"):
+                await ctx.author.remove_roles(dispatch, reason="Comms Command received.")
+                await ctx.send("{}, you have signed out of dispatch.".format(ctx.author))
+            else:
+                await ctx.author.add_roles(dispatch, reason="Comms command received.")
+                await ctx.send("{}, you have logged in to dispatch.".format(ctx.author))
+        else:
+            await ctx.send("There is no role called 'Active Officer'")
+
     @commands.command(aliases=['civ'])
     @commands.guild_only()
     async def civilian(self, ctx):
         civ = discord.utils.get(ctx.guild.roles, name="Active Civilian")
         print("{} used the civ command".format(ctx.author))
+        # Check if the server has role active {}
         if discord.utils.get(ctx.guild.roles, name="Active Civilian"):
             if discord.utils.get(ctx.author.roles, name="Active Civilian"):
                 await ctx.author.remove_roles(civ, reason="Civ Command received.")
@@ -41,6 +61,7 @@ class Ranks:
     async def ems(self, ctx):
         ems = discord.utils.get(ctx.guild.roles, name="Active EMS")
         print("{} used the ems command".format(ctx.author))
+        # Check if the server has role active {}
         if discord.utils.get(ctx.guild.roles, name="Active EMS"):
             if discord.utils.get(ctx.author.roles, name="Active EMS"):
                 await ctx.author.remove_roles(ems, reason="EMS Command received.")
@@ -127,7 +148,7 @@ class Ranks:
 
         await ctx.send("There is {0} Cops, {1} Civilians, {2} SAFD and {3} dispatchers".format(leo1, civ1, ems1, dispatch1))
 
-    @commands.command(aliases=['rem-rank'])
+    @commands.command(aliases=['rem-rank', 'remove', 'endrp'])
     @commands.guild_only()
     async def remove_ranks(self, ctx):
         leo = discord.utils.get(ctx.guild.roles, name="Active Officer")

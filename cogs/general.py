@@ -56,15 +56,18 @@ help2 = [
         'command_name': '~civ (*or ~civilian*)',
         'description': '`Gives or removes the Active Civilian role.`'
     }, {
-        'command_name': '~ratio (*or ~people*)',
-        'description': '`Gives you the ratio of the current amount of people!`'
+        'command_name': '~dispatch (*or ~dispatcher, ~disp, ~comms, ~communications*)',
+        'description': '`Gives or removes the Active Communicator role.`'
     }
 ]
 
 help3 = [
     {
-        'command_name': '~remove_ranks **Staff Command** (*or ~rem-rank*)',
+        'command_name': '~remove_ranks **Trusted Player Command** (*or ~rem-rank*)',
         'description': '`Removes everyones active roles!`'
+    }, {
+        'command_name': '~ratio (*or ~people*)',
+        'description': '`Gives you the ratio of the current amount of people!`'
     }
 ]
 
@@ -162,7 +165,7 @@ class General:
         channel = ctx.message.channel
         author = str(ctx.message.author)
         guild = ctx.guild
-        crim = discord.utils.get(guild.roles, name="Civilian/Criminal").mention
+        crim = discord.utils.get(guild.roles, name="Active Civilian").mention
         if ctx.message.guild.id == 473968917468020767:
             print('Priority command used by: {0}'.format(author))
             await channel.send("{} there is a priority at the moment, please wait 30 minute until you do one!".format(crim))

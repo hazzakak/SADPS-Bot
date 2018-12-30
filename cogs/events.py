@@ -26,12 +26,13 @@ class Events:
     async def on_command_error(self, ctx, error):
         error = getattr(error, 'original', error)
         harry = discord.utils.get(ctx.guild.members, id=302454373882003456)
-        if isinstance(error, discord.ext.commands.errors.MissingRequiredArgument):
+        if isinstance(error, discord.ext.commands.errors.MissingRequiredArgument:
             await ctx.send(":x: A required argument is missing.")
         elif isinstance(error, commands.CommandOnCooldown):
-            return await ctx.send("You can not do more than one priority in 30 minutes!")
+            return await ctx.send(
+                "You can not do more than one priority in 30 minutes!")
         elif isinstance(error, discord.ext.commands.CommandNotFound):
-            await ctx.send("{} does not exist, use ~help if you're having trouble with any commands.".format(ctx.command))
+            await ctx.send("{} does not exist, use ~help if you're having trouble with any commands.".format(ctx.message))
         else:
             await ctx.send("Oops, an error has occurred.")
             await harry.send(
