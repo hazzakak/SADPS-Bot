@@ -8,6 +8,8 @@ pynacl = "*"
 discord = {extras = ["voice"], version = "*"}
 datetime = "*"
 youtube-dl = "*"
+aiosqlite = "*"
+asyncpg = "*"
 
 [dev-packages]
 

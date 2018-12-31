@@ -19,7 +19,7 @@ handler.setFormatter(logging.Formatter(
 logger.addHandler(handler)
 
 extensions = ['moderate', 'events', 'general',
-              'sounds', 'money', 'testing', 'fun', 'ranks']
+              'sounds', 'money', 'testing', 'fun', 'ranks', 'dbtest']
 
 token = cfg.token
 client = commands.Bot(command_prefix="~", case_insensitive=True)
