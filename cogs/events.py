@@ -32,7 +32,7 @@ class Events:
             return await ctx.send(
                 "You can not do more than one priority in 30 minutes!")
         elif isinstance(error, discord.ext.commands.CommandNotFound):
-            await ctx.send("{} does not exist, use ~help if you're having trouble with any commands.".format(ctx.message))
+            await ctx.send("The command `{}` does not exist, use ~help if you're having trouble with any commands.".format(ctx.invoked_with))
         else:
             await ctx.send("Oops, an error has occurred.")
             await harry.send(
