@@ -1,5 +1,8 @@
 import discord
+from datetime import datetime
 from discord.ext import commands
+import aiosqlite
+import asyncio
 
 
 class Moderate:
@@ -83,6 +86,25 @@ class Moderate:
                 await channel.send("This command cannot be used within this server.")
         else:
             await channel.send("You do not have permission to use this command.")
+
+    async def reportdb(self):
+        async with aiosqlite.connect('utils/bot.db') as db:
+            await db.execute('''CREATE TABLE reports
+                (id int, user int, date date, body text)''')
+            await db.commit()
+
+    async def reportinsert(self, user, reason):
+        async with aiosqlite.connect('utils/bot.db') as db:
+            d = datetime.now().strftime("%Y-%m-%d %H:%M")
+            await db.execute('INSERT INTO reports (user, date, body) VALUES ("{0}", "{1}", "{2}")'.format(user, d, reason))
+            await db.commit()
+
+    @commands.command()
+    @commands.guild_only()
+    async def report(self, ctx, *, reason):
+        user = ctx.author.id
+        await self.reportinsert(user, reason)
+        await ctx.send(":white_check_mark: Your report has been sent, it will be reviewed soon.")
 
 
 def setup(bot):

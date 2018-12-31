@@ -1,5 +1,7 @@
 import discord
 from discord.ext import commands
+import aiosqlite
+import asyncio
 
 help1 = [
     {
@@ -193,6 +195,62 @@ class General:
         else:
             await channel.send("{0} a 911 call has been initiated: {1}".format(dispatch.mention, reason))
             print("911 command used by {0}".format(ctx.message.author))
+
+    @commands.command()
+    @commands.guild_only()
+    async def testing123(self, ctx):
+        print(ctx.message.author.voice)
+        discordget = ctx.guild.get_channel(507052685170704399)
+        print(discordget)
+
+    '''async def inserthelp(self, command, desc, cat):
+        async with aiosqlite.connect('utils/bot.db') as db:
+            await db.execute('INSERT INTO helplist (command, description, category) VALUES ("{0}", "{1}", "{2}")'.format(command, desc.capitalize(), cat.capitalize()))
+            await db.commit()
+            return'''
+
+    '''@commands.command()
+    @commands.guild_only()
+    async def addcommand(self, ctx):
+        if ctx.author.id == 302454373882003456:
+            await ctx.send("What is the command called?")
+            await asyncio.sleep(1)
+            command = await self.bot.wait_for('message')
+
+            await ctx.send("What is the command description?")
+            await asyncio.sleep(1)
+            desc = await self.bot.wait_for('message')
+
+            await ctx.send("What is the command category?")
+            await asyncio.sleep(1)
+            cat = await self.bot.wait_for('message')
+
+            await asyncio.sleep(3)
+            await self.inserthelp(command.content, desc.content, cat.content)
+
+            await ctx.send(f"The command `{command.content}` with the description `{desc.content}` has been added the the help list.")
+        else:
+            await ctx.send("You are not the ALMIGHTY HARRY")'''
+
+    '''@commands.command()
+    @commands.guild_only()
+    async def helplist(self, ctx, category=None):
+        category = category.toLowerCase()
+        if category == None:
+            embed = discord.Embed(
+                title='Which category?',
+                colour=discord.Colour.blue()
+            )
+            embed.set_footer(text="Bot created by harryjoseph#3275")
+            embed.set_thumbnail(url='https://i.imgur.com/LX8d1xH.jpg')
+            embed.set_author(name='SADPS Bot',
+                             icon_url='https://i.imgur.com/LX8d1xH.jpg')
+            embed.add_field(name="`General`", value=None, inline=False)
+            embed.add_field(name="`Roleplay`", value=None, inline=False)
+            embed.add_field(name="`Misc`", value=None, inline=False)
+            embed.add_field(name="`Moderation`", value=None, inline=False)
+            await ctx.send(embed=embed)
+        elif category == "general":'''
 
 
 def setup(bot):
