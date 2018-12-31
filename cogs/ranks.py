@@ -123,19 +123,22 @@ class Ranks:
 
         if discord.utils.get(ctx.guild.roles, name="Trusted Player"):
             for leomember in leo:
-                name = leomember.name
-                embedleo.add_field(name="[Officer]", value=name, inline=False)
+                name = leomember.nick
+                embedleo.add_field(
+                    name="[Officer]", value=name, inline=False)
 
             for civmember in civ:
-                name = civmember.name
-                embedciv.add_field(name="[Civilian]", value=name, inline=False)
+                name = civmember.nick
+                embedciv.add_field(name="[Civilian]",
+                                   value=name, inline=False)
 
             for emsmember in ems:
-                name = emsmember.name
-                embedems.add_field(name="[SAFD]", value=name, inline=False)
+                name = emsmember.nick
+                embedems.add_field(
+                    name="[SAFD]", value=name, inline=False)
 
             for dismember in dispatch:
-                name = dismember.name
+                name = dismember.nick
                 embeddis.add_field(
                     name="[Dispatcher]", value=name, inline=False)
 
