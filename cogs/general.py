@@ -82,6 +82,8 @@ class General:
         author = ctx.message.author
         if discord.utils.get(author.roles, name="Staff"):
             return True
+        else:
+            return False
 
     @commands.command(pass_context=True)
     @commands.guild_only()
