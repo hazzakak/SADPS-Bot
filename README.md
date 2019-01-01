@@ -25,6 +25,7 @@ To run the bot change the token and do ```pipenv run py bot.py```
 - ~rpjoin
 - ~kick
 - ~pager
+- ~911
 - ~civ
 - ~leo
 - ~ems
@@ -33,3 +34,5 @@ To run the bot change the token and do ```pipenv run py bot.py```
 - ~clear
 - ~ping
 - ~echo
+- ~report/reports
+- ~suggest
