@@ -203,6 +203,21 @@ class General:
         discordget = ctx.guild.get_channel(507052685170704399)
         print(discordget)
 
+    @commands.command()
+    @commands.guild_only()
+    async def suggest(self, ctx, *, suggestion):
+        devServer = discord.utils.get(self.bot.guilds, id=507052685170704394)
+        sugChannel = discord.utils.get(
+            devServer.channels, id=522618999830478848)
+        message = ":white_check_mark: your suggestion has been sent through to the development team, please wait for their verdict."
+        await ctx.send(message)
+        await asyncio.sleep(3)
+
+        sugMessage = await sugChannel.send(f"**{suggestion}** by *{ctx.author.nick}*")
+
+        await sugMessage.add_reaction("\U0001f44d")
+        await sugMessage.add_reaction("\U0001f44e")
+
     '''async def inserthelp(self, command, desc, cat):
         async with aiosqlite.connect('utils/bot.db') as db:
             await db.execute('INSERT INTO helplist (command, description, category) VALUES ("{0}", "{1}", "{2}")'.format(command, desc.capitalize(), cat.capitalize()))
