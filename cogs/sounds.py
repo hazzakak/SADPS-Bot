@@ -6,12 +6,7 @@ from discord.ext import commands
 class Sounds:
     def __init__(self, bot):
         self.bot = bot
-
-    @commands.command()
-    @commands.guild_only()
-    async def soundtest(self, ctx):
-        channel = ctx.message.author.voice.channel
-        await channel.connect()
+        
 
     @commands.command()
     @commands.guild_only()

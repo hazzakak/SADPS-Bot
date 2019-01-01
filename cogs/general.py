@@ -198,13 +198,6 @@ class General:
 
     @commands.command()
     @commands.guild_only()
-    async def testing123(self, ctx):
-        print(ctx.message.author.voice)
-        discordget = ctx.guild.get_channel(507052685170704399)
-        print(discordget)
-
-    @commands.command()
-    @commands.guild_only()
     async def suggest(self, ctx, *, suggestion):
         devServer = discord.utils.get(self.bot.guilds, id=507052685170704394)
         sugChannel = discord.utils.get(
