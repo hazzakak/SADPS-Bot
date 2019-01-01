@@ -6,7 +6,6 @@ The SADPS has several commands which helps out the roleplay experience for San A
 - Fully-featured RP support
 - Custom commands
 - New features weekly
--
 
 ## Installation
 Download python3.7 and PIP. You can do 
