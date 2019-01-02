@@ -36,3 +36,5 @@ To run the bot change the token and do ```pipenv run py bot.py```
 - ~echo
 - ~report/reports
 - ~suggest
+- ~ticket
+- ~ticketpaid
