@@ -6,7 +6,6 @@ The SADPS has several commands which helps out the roleplay experience for San A
 - Fully-featured RP support
 - Custom commands
 - New features weekly
--
 
 ## Installation
 Download python3.7 and PIP. You can do 
@@ -26,6 +25,7 @@ To run the bot change the token and do ```pipenv run py bot.py```
 - ~rpjoin
 - ~kick
 - ~pager
+- ~911
 - ~civ
 - ~leo
 - ~ems
@@ -34,3 +34,5 @@ To run the bot change the token and do ```pipenv run py bot.py```
 - ~clear
 - ~ping
 - ~echo
+- ~report/reports
+- ~suggest

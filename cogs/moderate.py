@@ -99,6 +99,55 @@ class Moderate:
             await db.execute('INSERT INTO reports (user, date, body) VALUES ("{0}", "{1}", "{2}")'.format(user, d, reason))
             await db.commit()
 
+    async def reportquery(self, id):
+        async with aiosqlite.connect('utils/bot.db') as db:
+            db.row_factory = aiosqlite.Row
+            sql = 'SELECT * FROM reports WHERE id = ?'
+            cursor = await db.execute(sql, (id,))
+
+            row = await cursor.fetchone()
+            rows = await cursor.fetchall()
+            await cursor.close()
+            if id == 0:
+                sql = 'SELECT * FROM reports'
+                cursor = await db.execute(sql)
+
+                rows = await cursor.fetchall()
+                return rows
+            else:
+                sql = 'SELECT * FROM reports WHERE id = ?'
+                cursor = await db.execute(sql, (id,))
+
+                row = await cursor.fetchone()
+                return row
+
+    @commands.command(aliases=['record'])
+    @commands.guild_only()
+    async def records(self, ctx, id=0):
+        embed = discord.Embed(
+            title='Reports',
+            colour=discord.Colour.red()
+        )
+        embed.set_footer(text="Bot created by harryjoseph#3275")
+        embed.set_thumbnail(url='https://i.imgur.com/LX8d1xH.jpg')
+        embed.set_author(name='SADPS Bot',
+                         icon_url='https://i.imgur.com/LX8d1xH.jpg')
+        if id == 0:
+            rows = await self.reportquery(id)
+            for row in rows:
+                embed.add_field(
+                    name=f"ID: {row['id']}", value=f"from: {self.bot.get_user(row['user'])}")
+            await ctx.send(embed=embed)
+        else:
+            row = await self.reportquery(id)
+            username = self.bot.get_user(row['user'])
+            report = row['body']
+            date = row['date']
+            embed.add_field(name="User:", value=f"{username}", inline=False)
+            embed.add_field(name="Report:", value=f"{report}", inline=False)
+            embed.add_field(name="Date:", value=f"{date}", inline=False)
+            await ctx.send(embed=embed)
+
     @commands.command()
     @commands.guild_only()
     async def report(self, ctx, *, reason):

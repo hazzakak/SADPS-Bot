@@ -9,7 +9,7 @@ class dbtest:
     def __init__(self, bot):
         self.bot = bot
 
-    async def botdb(self):
+    """async def botdb(self):
         async with aiosqlite.connect('utils/bot.db') as db:
             await db.execute('''CREATE TABLE stocks
                 (date text, trans text, symbol text, qty real, price real)''')
@@ -18,11 +18,7 @@ class dbtest:
     @commands.command()
     async def dbtester(self, ctx):
         await self.botdb()
-<<<<<<< Updated upstream
-        await ctx.send("completed")
-=======
-        await ctx.send('completed')"""
->>>>>>> Stashed changes
+        await ctx.send("completed")"""
 
 
 def setup(bot):
