@@ -18,7 +18,11 @@ class dbtest:
     @commands.command()
     async def dbtester(self, ctx):
         await self.botdb()
+<<<<<<< Updated upstream
         await ctx.send("completed")
+=======
+        await ctx.send('completed')"""
+>>>>>>> Stashed changes
 
 
 def setup(bot):

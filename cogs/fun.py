@@ -13,10 +13,11 @@ class Fun:
         toss = random.randint(0, 1)
         author = ctx.message.author
         print("{0} used the coinflip command!".format(author))
-        if toss == 0:
-            await channel.send("Heads!")
-        else:
-            await channel.send("Tails :(")
+        try:
+            if toss == 0:
+                await channel.send("Heads!")
+            else:
+                await channel.send("Tails :(")
 
     @commands.command()
     @commands.guild_only()
