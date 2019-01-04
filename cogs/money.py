@@ -13,23 +13,26 @@ class Money:
         ticketRole = ctx.guild.get_role(513653523905380372)
         guildTicket = ctx.guild
 
-        def check(m):
-            return m.mentions
+        def checkOne(m):
+            return m.mentions and m.author == ctx.author and m.channel == ctx.channel
+
+        def checkTwo(m):
+            return m.author == ctx.author and m.channel == ctx.channel
 
         await ctx.send("Who is this for? [*tag them*]")
-        fineTarget = await self.bot.wait_for('message', check=check)
+        fineTarget = await self.bot.wait_for('message', check=checkOne)
         await asyncio.sleep(1)
 
         await ctx.send("How much is it? [*don't use a currency prefix*]")
-        fineAmount = await self.bot.wait_for('message')
+        fineAmount = await self.bot.wait_for('message', check=checkTwo)
         await asyncio.sleep(1)
 
         await ctx.send("What is the in-game character name?")
-        charName = await self.bot.wait_for('message')
+        charName = await self.bot.wait_for('message', check=checkTwo)
         await asyncio.sleep(1)
 
         await ctx.send("What did the offender do?")
-        fineReason = await self.bot.wait_for('message')
+        fineReason = await self.bot.wait_for('message', check=checkTwo)
         await asyncio.sleep(1)
 
         mentionId = fineTarget.mentions[0]
