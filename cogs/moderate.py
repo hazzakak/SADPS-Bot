@@ -99,12 +99,123 @@ class Moderate:
             await db.execute('INSERT INTO reports (user, date, body) VALUES ("{0}", "{1}", "{2}")'.format(user, d, reason))
             await db.commit()
 
-    @commands.command()
+    async def reportquery(self, id):
+        async with aiosqlite.connect('utils/bot.db') as db:
+            db.row_factory = aiosqlite.Row
+            sql = 'SELECT * FROM reports WHERE id = ?'
+            cursor = await db.execute(sql, (id,))
+
+            row = await cursor.fetchone()
+            rows = await cursor.fetchall()
+            await cursor.close()
+            if id == 0:
+                sql = 'SELECT * FROM reports'
+                cursor = await db.execute(sql)
+
+                rows = await cursor.fetchall()
+                return rows
+            else:
+                sql = 'SELECT * FROM reports WHERE id = ?'
+                cursor = await db.execute(sql, (id,))
+
+                row = await cursor.fetchone()
+                return row
+
+    async def reportRowDelete(self, id):
+        async with aiosqlite.connect('utils/bot.db') as db:
+            sql = 'DELETE FROM reports WHERE id = ?'
+            cursor = await db.execute(sql, (id,))
+            await db.commit()
+
+            await cursor.close()
+
+    @commands.command(aliases=['record', 'reports'])
     @commands.guild_only()
+    async def records(self, ctx, id=0):
+        embed = discord.Embed(
+            title='Reports',
+            colour=discord.Colour.red()
+        )
+        embed.set_footer(text="Bot created by harryjoseph#3275")
+        embed.set_thumbnail(url='https://i.imgur.com/LX8d1xH.jpg')
+        embed.set_author(name='SADPS Bot',
+                         icon_url='https://i.imgur.com/LX8d1xH.jpg')
+        if discord.utils.get(ctx.author.roles, name="Staff"):
+            if id == 0:
+                rows = await self.reportquery(id)
+                for row in rows:
+                    embed.add_field(
+                        name=f"ID: {row['id']}", value=f"from: {self.bot.get_user(row['user'])}")
+                await ctx.send(embed=embed)
+            else:
+                row = await self.reportquery(id)
+                username = self.bot.get_user(row['user'])
+                report = row['body']
+                date = row['date']
+                embed.add_field(
+                    name="User:", value=f"{username}", inline=False)
+                embed.add_field(
+                    name="Report:", value=f"{report}", inline=False)
+                embed.add_field(name="Date:", value=f"{date}", inline=False)
+                await ctx.send(embed=embed)
+        else:
+            await ctx.send("You must be staff to use this command.")
+
+    @commands.command()
     async def report(self, ctx, *, reason):
         user = ctx.author.id
+        reportChat = ctx.guild.get_channel(526810175655510016)
+
+        embed = discord.Embed(
+            title='Reports',
+            colour=discord.Colour.red()
+        )
+        embed.set_footer(text="Bot created by harryjoseph#3275")
+        embed.set_thumbnail(url='https://i.imgur.com/LX8d1xH.jpg')
+        embed.set_author(name='SADPS Bot',
+                         icon_url='https://i.imgur.com/LX8d1xH.jpg')
+        embed.add_field(
+            name=f"Report from: {ctx.author.nick}", value=f"{reason}", inline=False)
+
         await self.reportinsert(user, reason)
+        await ctx.message.delete()
         await ctx.send(":white_check_mark: Your report has been sent, it will be reviewed soon.")
+        await reportChat.send(embed=embed)
+
+    @commands.command(aliases=['report-delete', 'report-remove', 'del-report'])
+    async def reportdelete(self, ctx, id):
+        if discord.utils.get(ctx.author.roles, name="Staff"):
+            await self.reportRowDelete(id)
+            await ctx.send(f"Report ID: {id} has been removed.")
+        else:
+            await ctx.send("You must be staff to use this command.")
+
+    @commands.command()
+    @commands.guild_only()
+    async def strike(self, ctx, user: discord.Member, *, reason):
+        strikeOne = discord.utils.get(ctx.guild.roles, name="X")
+        strikeTwo = discord.utils.get(ctx.guild.roles, name="XX")
+        strikeThree = discord.utils.get(ctx.guild.roles, name="XXX")
+        if discord.utils.get(ctx.author.roles, name="Staff"):
+            if discord.utils.get(ctx.guild.roles, name="X"):
+                if discord.utils.get(user.roles, name="X"):
+                    await ctx.send("The strike has been assigned!")
+                    await user.add_roles(strikeTwo, reason=reason, atomic=True)
+                    await user.send(f"You have been given your second strike because: {reason}. If you would wish to know why speak to a Junior Staff Member.")
+                elif discord.utils.get(user.roles, name="XX"):
+                    await ctx.send("The strike has been assigned!")
+                    await user.add_roles(strikeThree, reason=reason, atomic=True)
+                    await user.send(f"You have been given your third strike because: {reason}. If you would wish to know why speak to a Junior Staff Member. However, this is your FINAL warning.")
+                elif discord.utils.get(user.roles, name="XXX"):
+                    await ctx.send("This user has already recieved 3 strikes, consult with the staff team for the next stage.")
+                else:
+                    await ctx.send("The strike has been assigned!")
+                    await user.add_roles(strikeOne, reason=reason, atomic=True)
+                    await user.send(f"You have been given your first strike because: {reason}. If you would wish to know why speak to a Junior Staff Member.")
+            else:
+                await ctx.send("This server does not have the 'X' role.")
+        else:
+            await ctx.send("You're not a staff :o !")
 
 
 def setup(bot):

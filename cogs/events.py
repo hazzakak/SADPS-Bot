@@ -13,6 +13,8 @@ class Events:
         if member.guild.id == 473977440603996164:
             time.sleep(2)
             print(str(member) + ' has been messaged')
+            newRole = discord.utils.get(member.guild.roles, name="Applicant")
+            await member.add_roles(newRole, reason="New member")
             await member.send('Hello there! Be sure to head of to the general chat if you have any questions, to apply go to #apply-here and and follow the instructions. Applications should take from 1-48 hours so please be patient!')
 
     async def on_message(self, message):
@@ -29,8 +31,15 @@ class Events:
         if isinstance(error, discord.ext.commands.errors.MissingRequiredArgument):
             await ctx.send(":x: A required argument is missing.")
         elif isinstance(error, commands.CommandOnCooldown):
+            timeLeftSec = error.retry_after
+            timeLeftMin = timeLeftSec / 60
+            timeLeftFloat = round(timeLeftMin, 0)
+            timeLeft = int(timeLeftFloat)
+
+            print(timeLeft)
+
             return await ctx.send(
-                "You can not do more than one priority in 30 minutes!")
+                f"You can not do a priority for another {timeLeft} minutes!")
         elif isinstance(error, discord.ext.commands.CommandNotFound):
             await ctx.send("The command `{}` does not exist, use ~help if you're having trouble with any commands.".format(ctx.invoked_with))
         else:

@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands
+import asyncio
 
 
 class Money:
@@ -8,15 +9,41 @@ class Money:
 
     @commands.command()
     @commands.guild_only()
-    async def ticket(self, ctx, fineAmount, fineTarget: discord.Member, *, characterName):
-        channel = ctx.message.channel
-        role = ctx.guild.get_role(513653523905380372)
-        print("{0} has been given a ticket.".format(fineTarget))
-        await channel.send("{0} has been fined ${1}".format(fineTarget, fineAmount))
-        await fineTarget.add_roles(role, reason="For the fine", atomic=True)
-        await fineTarget.send(
-            f"Your character {characterName} has been fined ${fineAmount}. To pay off this fine do `/ pay(~)SADPS"
-            " {fineAmount}` and after that do `~ticketpaid`.")
+    async def ticket(self, ctx):
+        ticketRole = ctx.guild.get_role(513653523905380372)
+        guildTicket = ctx.guild
+
+        def checkOne(m):
+            return m.mentions and m.author == ctx.author and m.channel == ctx.channel
+
+        def checkTwo(m):
+            return m.author == ctx.author and m.channel == ctx.channel
+
+        await ctx.send("Who is this for? [*tag them*]")
+        fineTarget = await self.bot.wait_for('message', check=checkOne)
+        await asyncio.sleep(1)
+
+        await ctx.send("How much is it? [*don't use a currency prefix*]")
+        fineAmount = await self.bot.wait_for('message', check=checkTwo)
+        await asyncio.sleep(1)
+
+        await ctx.send("What is the in-game character name?")
+        charName = await self.bot.wait_for('message', check=checkTwo)
+        await asyncio.sleep(1)
+
+        await ctx.send("What did the offender do?")
+        fineReason = await self.bot.wait_for('message', check=checkTwo)
+        await asyncio.sleep(1)
+
+        mentionId = fineTarget.mentions[0]
+        mentionMember = guildTicket.get_member(mentionId.id)
+
+        print(repr(mentionId))
+
+        await ctx.send("{0} has been fined ${1}".format(mentionId.mention, fineAmount.content))
+        await mentionMember.add_roles(ticketRole, reason="For the fine", atomic=True)
+        await mentionMember.send(
+            f"Your character {charName.content} has been fined ${fineAmount.content}. To pay off this fine do `/pay (~)SADPS {fineAmount.content}` and after that do `~ticketpaid`. You got this ticket because: {fineReason.content}")
 
     @commands.command()
     @commands.guild_only()
