@@ -3,11 +3,23 @@ import time
 import sys
 import traceback
 from discord.ext import commands
+import aiosqlite
+import asyncio
 
 
 class Events:
     def __init__(self, bot):
         self.bot = bot
+
+    async def viewSimpleCommand(self, commandName):
+        async with aiosqlite.connect('utils/bot.db') as db:
+            db.row_factory = aiosqlite.Row
+            sql = 'SELECT * FROM simpleCommands WHERE command = ?'
+            cursor = await db.execute(sql, (commandName,))
+
+            row = await cursor.fetchone()
+            return row
+            await db.close()
 
     async def on_member_join(self, member):
         if member.guild.id == 473977440603996164:
@@ -26,13 +38,20 @@ class Events:
     async def on_command_error(self, ctx, error):
         error = getattr(error, 'original', error)
         harry = discord.utils.get(ctx.guild.members, id=302454373882003456)
+        commandUsed = ctx.invoked_with.lower()
+        findCommand = await self.viewSimpleCommand(commandUsed)
         if isinstance(error, discord.ext.commands.errors.MissingRequiredArgument):
             await ctx.send(":x: A required argument is missing.")
         elif isinstance(error, commands.CommandOnCooldown):
             return await ctx.send(
                 "You can not do more than one priority in 30 minutes!")
         elif isinstance(error, discord.ext.commands.CommandNotFound):
-            await ctx.send("The command `{}` does not exist, use ~help if you're having trouble with any commands.".format(ctx.invoked_with))
+            if findCommand != None:
+                await ctx.send(findCommand["response"])
+            else:
+                await ctx.send("The command `{}` does not exist, use ~help if you're having trouble with any commands.".format(ctx.invoked_with))
+        elif isinstance(error, discord.ext.commands.errors.CheckFailure):
+            await ctx.send(":x: You do not have permission for this command!")
         else:
             await ctx.send("Oops, an error has occurred.")
             await harry.send(

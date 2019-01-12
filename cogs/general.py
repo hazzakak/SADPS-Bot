@@ -3,76 +3,6 @@ from discord.ext import commands
 import aiosqlite
 import asyncio
 
-help1 = [
-    {
-        'command_name': '~rpstart',
-        'description': '`Notifies SADPS that there is an RP starting!`'
-    },
-    {
-        'command_name': '~rpover',
-        'description': '`Notifies SADPS that the RP is ending.` :('
-    }, {
-        'command_name': '~rpjoin',
-        'description': "`Notifies SADPS that there is an RP and it needs people!`"
-    }, {
-        'command_name': '~echo  <content> **Staff Command**',
-        'description': '`Says RP is live, come and join`'
-    }, {
-        'command_name': '~ping',
-        'description': '`Tests the functionality of the bot with a simple, Ping Pong command.`'
-    }, {
-        'command_name': '~clear (default=1) <amount> **Staff Command**',
-        'description': '`Clears the amount of messages you specified!`'
-    }, {
-        'command_name': '~pager',
-        'description': '`Sounds the pager alarm!`'
-    }, {
-        'command_name': '~priority',
-        'description': '`Begin priority timer (30 minutes).`'
-    }, {
-        'command_name': '~reset_priority **Staff Command**',
-        'description': '`Resets the priority timer, ONLY TO BE USED BY STAFF`'
-    }
-]
-
-help2 = [
-    {
-        'command_name': '~ticket <amount> <offender tag> <character name>',
-        'description': '`This gives the person a ticket.`'
-    }, {
-        'command_name': '~ticketpaid',
-        'description': '`This removes the ticket (after being paid)`'
-    }, {
-        'command_name': '~911 <reason>',
-        'description': '`Be a snitch and call 911`'
-    }, {
-        'command_name': '~coin',
-        'description': '`Heads or tails!`'
-    }, {
-        'command_name': '~leo (*or ~cop, ~officer*)',
-        'description': '`Gives or removes the Active Officer role.`'
-    }, {
-        'command_name': '~ems (*or ~medic, ~fire, ~medical*)',
-        'description': '`Gives or removes the Active EMS role.`'
-    }, {
-        'command_name': '~civ (*or ~civilian*)',
-        'description': '`Gives or removes the Active Civilian role.`'
-    }, {
-        'command_name': '~dispatch (*or ~dispatcher, ~disp, ~comms, ~communications*)',
-        'description': '`Gives or removes the Active Communicator role.`'
-    }
-]
-
-help3 = [
-    {
-        'command_name': '~remove_ranks **Trusted Player Command** (*or ~rem-rank*)',
-        'description': '`Removes everyones active roles!`'
-    }, {
-        'command_name': '~ratio (*or ~people*)',
-        'description': '`Gives you the ratio of the current amount of people!`'
-    }
-]
-
 
 class General:
     def __init__(self, bot):
@@ -82,83 +12,44 @@ class General:
         author = ctx.message.author
         if discord.utils.get(author.roles, name="Staff"):
             return True
-
-    @commands.command(pass_context=True)
-    @commands.guild_only()
-    async def rpstart(self, ctx):
-        disabled = False
-        channel = ctx.message.channel
-        print('RPStart command used by: ' + str(ctx.message.author))
-        if disabled is False:
-            await channel.send("@everyone rp is starting join RP staging!")
         else:
-            await channel.send("This command is disabled :open_mouth:")
+            return False
 
-    @commands.command(pass_context=True)
-    @commands.guild_only()
-    async def rpover(self, ctx):
-        channel = ctx.message.channel
-        author = str(ctx.message.author)
-        print('RPOver command used by: {}'.format(author))
-        disabled = False
-        if disabled is False:
-            await channel.send("@here Rp over leave your roles before Luis catches you.")
-        else:
-            await channel.send("This command is disabled :open_mouth:")
+    async def addSimpleCommandDB(self, simpleCommand, response):
+        async with aiosqlite.connect('utils/bot.db') as db:
+            await db.execute('INSERT INTO simpleCommands (command, response) VALUES ("{0}", "{1}")'.format(simpleCommand, response.capitalize()))
+            await db.commit()
+            return
 
-    @commands.command(pass_context=True)
-    @commands.guild_only()
-    async def rpjoin(self, ctx):
-        channel = ctx.message.channel
-        author = str(ctx.message.author)
-        print('RPOver command used by: {}'.format(author))
-        disabled = False
-        if disabled is False:
-            await channel.send("RP is live, come and join, @everyone")
-        else:
-            await channel.send("This command is disabled :open_mouth:")
+    async def inserthelp(self, command, desc):
+        async with aiosqlite.connect('utils/bot.db') as db:
+            await db.execute('INSERT INTO helplist (command, description) VALUES ("{0}", "{1}")'.format(command, desc.capitalize()))
+            await db.commit()
+            return
 
-    @commands.command(pass_context=True)
-    @commands.guild_only()
-    async def help(self, ctx, page: int = 1):
-        author = str(ctx.message.author)
-        channel = ctx.message.channel
-        print('Help command used by: ' + author)
-        embed = discord.Embed(
-            title='Help',
-            colour=discord.Colour.blue()
-        )
-        embed.set_footer(text="Bot created by harryjoseph#3275")
-        embed.set_thumbnail(url='https://i.imgur.com/LX8d1xH.jpg')
-        embed.set_author(name='SADPS Bot',
-                         icon_url='https://i.imgur.com/LX8d1xH.jpg')
-        print('{}'.format(page))
-        if page == 1:
-            for command in help1:
-                embed.add_field(
-                    name=command['command_name'], value=command['description'], inline=False)
-            embed.add_field(
-                name="~help 2", value="for the next page", inline=False)
-            await ctx.author.send(embed=embed)
-            await channel.send('You have been private messaged the help list!')
-        elif page == 2:
-            for command in help2:
-                embed.add_field(
-                    name=command['command_name'], value=command['description'], inline=False)
-            embed.add_field(
-                name="~help 3", value="for the next page", inline=False)
-            await ctx.author.send(embed=embed)
-            await channel.send('You have been private messaged the help list.')
-        elif page == 3:
-            for command in help3:
-                embed.add_field(
-                    name=command['command_name'], value=command['description'], inline=False)
-            embed.add_field(
-                name="Last page", value="Last page of the help list", inline=False)
-            await ctx.author.send(embed=embed)
-            await channel.send('You have been private messaged the help list.')
-        elif page > 3:
-            await ctx.send("There isn't a page {}.".format(page))
+    async def searchhelp(self, page):
+        async with aiosqlite.connect('utils/bot.db') as db:
+            offset = page*10-10
+            sql = 'SELECT * FROM helplist LIMIT 10 OFFSET ?'
+            cursor = await db.execute(sql, (offset,))
+            return await cursor.fetchall()
+
+    async def viewAscDB(self):
+        async with aiosqlite.connect('utils/bot.db') as db:
+            db.row_factory = aiosqlite.Row
+            sql = 'SELECT * FROM simpleCommands'
+            cursor = await db.execute(sql)
+
+            rows = await cursor.fetchall()
+            return rows
+            await cursor.close()
+
+    async def deleteAscDB(self, id):
+        async with aiosqlite.connect('utils/bot.db') as db:
+            sql = 'DELETE FROM simpleCommands WHERE id = ?'
+            cursor = await db.execute(sql, (id,))
+
+            await db.commit()
 
     @commands.cooldown(1, 1800, commands.BucketType.guild)
     @commands.command()
@@ -177,13 +68,13 @@ class General:
 
     @commands.command()
     @commands.guild_only()
+    @commands.has_role("Staff")
     async def reset_priority(self, ctx):
         channel = ctx.message.channel
-        if discord.utils.get(ctx.author.roles, name="Staff"):
-            self.priority.reset_cooldown(ctx)
-            await channel.send("The priority cooldown has been reset, the command can be used.")
-            print("Priority reset command  used by {0}".format(
-                ctx.message.author))
+        self.priority.reset_cooldown(ctx)
+        await channel.send("The priority cooldown has been reset, the command can be used.")
+        print("Priority reset command  used by {0}".format(
+            ctx.message.author))
 
     @commands.command(name="911")
     @commands.guild_only()
@@ -218,54 +109,262 @@ class General:
         await sugMessage.add_reaction("\U0001f44d")
         await sugMessage.add_reaction("\U0001f44e")
 
-    '''async def inserthelp(self, command, desc, cat):
-        async with aiosqlite.connect('utils/bot.db') as db:
-            await db.execute('INSERT INTO helplist (command, description, category) VALUES ("{0}", "{1}", "{2}")'.format(command, desc.capitalize(), cat.capitalize()))
-            await db.commit()
-            return'''
-
-    '''@commands.command()
+    @commands.command()
     @commands.guild_only()
+    @commands.is_owner()
     async def addcommand(self, ctx):
-        if ctx.author.id == 302454373882003456:
-            await ctx.send("What is the command called?")
-            await asyncio.sleep(1)
-            command = await self.bot.wait_for('message')
+        def checkTwo(m):
+            return m.author == ctx.author and m.channel == ctx.channel
 
-            await ctx.send("What is the command description?")
-            await asyncio.sleep(1)
-            desc = await self.bot.wait_for('message')
+        await ctx.send("What is the command called?")
+        await asyncio.sleep(1)
+        command = await self.bot.wait_for('message', check=checkTwo)
 
-            await ctx.send("What is the command category?")
-            await asyncio.sleep(1)
-            cat = await self.bot.wait_for('message')
+        await ctx.send("What is the command description?")
+        await asyncio.sleep(1)
+        desc = await self.bot.wait_for('message', check=checkTwo)
 
-            await asyncio.sleep(3)
-            await self.inserthelp(command.content, desc.content, cat.content)
+        await asyncio.sleep(3)
+        await self.inserthelp(command.content, desc.content)
 
-            await ctx.send(f"The command `{command.content}` with the description `{desc.content}` has been added the the help list.")
-        else:
-            await ctx.send("You are not the ALMIGHTY HARRY")'''
+        await ctx.send(f"The command `{command.content}` with the description `{desc.content}` has been added the the help list.")
 
-    '''@commands.command()
+    @commands.command(aliases=['helplist'])
     @commands.guild_only()
-    async def helplist(self, ctx, category=None):
-        category = category.toLowerCase()
-        if category == None:
-            embed = discord.Embed(
-                title='Which category?',
-                colour=discord.Colour.blue()
-            )
-            embed.set_footer(text="Bot created by harryjoseph#3275")
-            embed.set_thumbnail(url='https://i.imgur.com/LX8d1xH.jpg')
-            embed.set_author(name='SADPS Bot',
-                             icon_url='https://i.imgur.com/LX8d1xH.jpg')
-            embed.add_field(name="`General`", value=None, inline=False)
-            embed.add_field(name="`Roleplay`", value=None, inline=False)
-            embed.add_field(name="`Misc`", value=None, inline=False)
-            embed.add_field(name="`Moderation`", value=None, inline=False)
+    async def help(self, ctx, page: int = 1):
+        embed = discord.Embed(
+            title='Helplist',
+            colour=discord.Colour.orange()
+        )
+        embed.set_footer(text="Bot created by harryjoseph#3275")
+        embed.set_thumbnail(url='https://i.imgur.com/LX8d1xH.jpg')
+        embed.set_author(name='SADPS Bot',
+                         icon_url='https://i.imgur.com/LX8d1xH.jpg')
+        rows = await self.searchhelp(page)
+        print(rows)
+        if rows == []:
+            await ctx.send("That page number does not exist.")
+        else:
+            for row in rows:
+                embed.add_field(
+                    name=f"Command: `{row[1]}`", value=f"{row[2]}", inline=False)
             await ctx.send(embed=embed)
-        elif category == "general":'''
+
+    @commands.command(aliases=['asc', 'add-cmd', 'addcmd'])
+    @commands.guild_only()
+    async def addSimpleCommand(self, ctx):
+        if ctx.author.id == 302454373882003456 or ctx.author.id == 424614954310565888 or ctx.author.id == 396034970788823042:
+            def check(m):
+                return m.author == ctx.author and m.channel == ctx.channel
+
+            await ctx.send("What is the command?")
+            await asyncio.sleep(1)
+            command = await self.bot.wait_for('message', check=check)
+            if command.content.strip().count(' ') > 0:
+                await ctx.send("The command can only have one word.")
+                return
+
+            await ctx.send("What should it respond?")
+            await asyncio.sleep(1)
+            response = await self.bot.wait_for('message', check=check)
+
+            await self.addSimpleCommandDB(command.content.lower(), response.content)
+
+            await ctx.send(f"Command `~{command.content}` has been added with the response: `{response.content}`")
+        else:
+            await ctx.send("You are not permitted to create a simple command.")
+
+    @commands.command(aliases=['simplecommands'])
+    @commands.guild_only()
+    async def viewAsc(self, ctx):
+        embed = discord.Embed(
+            title='Simple Commands',
+            colour=discord.Colour.green()
+        )
+        embed.set_footer(text="Bot created by harryjoseph#3275")
+        embed.set_thumbnail(url='https://i.imgur.com/LX8d1xH.jpg')
+        embed.set_author(name='SADPS Bot',
+                         icon_url='https://i.imgur.com/LX8d1xH.jpg')
+        viewSimpleCommands = await self.viewAscDB()
+        for command in viewSimpleCommands:
+            embed.add_field(
+                name=f"({command['id']}) {command['command']}", value=f"{command['response']}", inline=False)
+        await ctx.send(embed=embed)
+
+    @commands.command(aliases=['delete-asc'])
+    @commands.guild_only()
+    async def delAsc(self, ctx, id: int):
+        if ctx.author.id == 302454373882003456 or ctx.author.id == 424614954310565888 or ctx.author.id == 396034970788823042:
+            await self.deleteAscDB(id)
+            await ctx.send(f"The command with ID: {id} has been deleted!")
+        else:
+            await ctx.send("You are not permitted to delete a simple command.")
+
+    @commands.command()
+    @commands.guild_only()
+    @commands.has_any_role("Department Head", "FTO Director", "Staff", "FTO Deputy Director", "Assistant Department Head")
+    async def cadets(self, ctx):
+        mainServer = self.bot.get_guild(473968917468020767)
+        cadetsRole = discord.utils.get(mainServer.roles, name="Needs Training")
+        cadetsMembers = cadetsRole.members
+
+        bcsoRole = discord.utils.get(
+            mainServer.roles, name="Blaine County Sheriffs Office")
+        lspdRole = discord.utils.get(
+            mainServer.roles, name="Los Santos Police Department")
+        sahpRole = discord.utils.get(
+            mainServer.roles, name="San Andreas Highway Patrol")
+
+        embedBCSO = discord.Embed(
+            title="Cadet Tracker", colour=discord.Colour.green(), inline=False)
+        embedBCSO.set_footer(text="Bot created by harryjoseph#3275")
+        embedBCSO.set_author(name='SADPS Bot',
+                             icon_url='https://i.imgur.com/LX8d1xH.jpg')
+
+        embedLSPD = discord.Embed(
+            title="Cadet Tracker", colour=discord.Colour.blue(), inline=False)
+        embedLSPD.set_footer(text="Bot created by harryjoseph#3275")
+        embedLSPD.set_author(name='SADPS Bot',
+                             icon_url='https://i.imgur.com/LX8d1xH.jpg')
+
+        embedSAHP = discord.Embed(
+            title="Cadet Tracker", colour=discord.Colour.orange(), inline=False)
+        embedSAHP.set_footer(text="Bot created by harryjoseph#3275")
+        embedSAHP.set_author(name='SADPS Bot',
+                             icon_url='https://i.imgur.com/LX8d1xH.jpg')
+
+        for cadet in cadetsMembers:
+            if bcsoRole in cadet.roles:
+                embedBCSO.add_field(
+                    name="BCSO:", value=f"`{cadet.nick}`", inline=False)
+
+            if sahpRole in cadet.roles:
+                embedSAHP.add_field(
+                    name="SAHP:", value=f"`{cadet.nick}`", inline=False)
+
+            if lspdRole in cadet.roles:
+                embedLSPD.add_field(
+                    name="LSPD:", value=f"`{cadet.nick}`", inline=False)
+        await ctx.send(embed=embedBCSO)
+        await ctx.send(embed=embedLSPD)
+        await ctx.send(embed=embedSAHP)
+
+    @commands.command()
+    @commands.guild_only()
+    @commands.has_any_role("Department Head", "Staff")
+    async def deptcheck(self, ctx):
+        mainServer = self.bot.get_guild(473968917468020767)
+        cadetsRole = discord.utils.get(mainServer.roles, name="Needs Training")
+        cadetsMembers = cadetsRole.members
+
+        rideAlong1 = discord.utils.get(mainServer.roles, name="Ride Along #1")
+        rideAlong2 = discord.utils.get(mainServer.roles, name="Ride Along #2")
+        rideAlong3 = discord.utils.get(mainServer.roles, name="Ride Along #3")
+
+        bcsoRole = discord.utils.get(
+            mainServer.roles, name="Blaine County Sheriffs Office")
+        lspdRole = discord.utils.get(
+            mainServer.roles, name="Los Santos Police Department")
+        sahpRole = discord.utils.get(
+            mainServer.roles, name="San Andreas Highway Patrol")
+
+        bcsoCount = len(bcsoRole.members)
+        lspdCount = len(lspdRole.members)
+        sahpCount = len(sahpRole.members)
+
+        embedBCSO = discord.Embed(
+            title="BCSO Information", colour=discord.Colour.green(), inline=False)
+        embedBCSO.set_footer(text="Bot created by harryjoseph#3275")
+        embedBCSO.set_author(name='SADPS Bot',
+                             icon_url='https://i.imgur.com/LX8d1xH.jpg')
+
+        embedLSPD = discord.Embed(
+            title="LSPD Information", colour=discord.Colour.blue(), inline=False)
+        embedLSPD.set_footer(text="Bot created by harryjoseph#3275")
+        embedLSPD.set_author(name='SADPS Bot',
+                             icon_url='https://i.imgur.com/LX8d1xH.jpg')
+
+        embedSAHP = discord.Embed(
+            title="SAHP Information", colour=discord.Colour.orange(), inline=False)
+        embedSAHP.set_footer(text="Bot created by harryjoseph#3275")
+        embedSAHP.set_author(name='SADPS Bot',
+                             icon_url='https://i.imgur.com/LX8d1xH.jpg')
+
+        if discord.utils.get(ctx.author.roles, name="Blaine County Sheriffs Office"):
+            embedBCSO.add_field(
+                name="Members:", value=f"{bcsoCount}")
+
+            for cadet in cadetsMembers:
+                if bcsoRole in cadet.roles:
+                    embedBCSO.add_field(
+                        name="Cadet:", value=f"**-** `{cadet.nick}`")
+
+            for rideAlong in rideAlong1.members:
+                if bcsoRole in rideAlong.roles:
+                    embedBCSO.add_field(
+                        name="Ride Along #1:", value=f"**-** `{rideAlong.nick}`")
+
+            for rideAlong in rideAlong2.members:
+                if bcsoRole in rideAlong.roles:
+                    embedBCSO.add_field(
+                        name="Ride Along #2:", value=f"**-** `{rideAlong.nick}`")
+
+            for rideAlong in rideAlong3.members:
+                if bcsoRole in rideAlong.roles:
+                    embedBCSO.add_field(
+                        name="Ride Along #3:", value=f"**-** `{rideAlong.nick}`")
+            await ctx.send(embed=embedBCSO)
+
+        if discord.utils.get(ctx.author.roles, name="San Andreas Highway Patrol"):
+            embedSAHP.add_field(
+                name="Members:", value=f"{sahpCount}")
+
+            for cadet in cadetsMembers:
+                if sahpRole in cadet.roles:
+                    embedSAHP.add_field(
+                        name="Cadet:", value=f"**-** `{cadet.nick}`")
+
+            for rideAlong in rideAlong1.members:
+                if sahpRole in rideAlong.roles:
+                    embedSAHP.add_field(
+                        name="Ride Along #1:", value=f"**-** `{rideAlong.nick}`")
+
+            for rideAlong in rideAlong2.members:
+                if sahpRole in rideAlong.roles:
+                    embedSAHP.add_field(
+                        name="Ride Along #2:", value=f"**-** `{rideAlong.nick}`")
+
+            for rideAlong in rideAlong3.members:
+                if sahpRole in rideAlong.roles:
+                    embedSAHP.add_field(
+                        name="Ride Along #3:", value=f"**-** `{rideAlong.nick}`")
+            await ctx.send(embed=embedSAHP)
+
+        if discord.utils.get(ctx.author.roles, name="Los Santos Police Department"):
+            embedLSPD.add_field(
+                name="Members:", value=f"{lspdCount}")
+
+            for cadet in cadetsMembers:
+                if lspdRole in cadet.roles:
+                    embedLSPD.add_field(
+                        name="Cadet:", value=f"**-** `{cadet.nick}`")
+
+            for rideAlong in rideAlong1.members:
+                if lspdRole in rideAlong.roles:
+                    embedLSPD.add_field(
+                        name="Ride Along #1:", value=f"**-** `{rideAlong.nick}`")
+
+            for rideAlong in rideAlong2.members:
+                if lspdRole in rideAlong.roles:
+                    embedLSPD.add_field(
+                        name="Ride Along #2:", value=f"**-** `{rideAlong.nick}`")
+
+            for rideAlong in rideAlong3.members:
+                if lspdRole in rideAlong.roles:
+                    embedLSPD.add_field(
+                        name="Ride Along #3:", value=f"**-** `{rideAlong.nick}`")
+
+            await ctx.send(embed=embedLSPD)
 
 
 def setup(bot):
