@@ -13,7 +13,7 @@ class General:
         if discord.utils.get(author.roles, name="Staff"):
             return True
         else:
-            return False
+            return False        
 
     async def addSimpleCommandDB(self, simpleCommand, response):
         async with aiosqlite.connect('utils/bot.db') as db:
@@ -89,18 +89,11 @@ class General:
 
     @commands.command()
     @commands.guild_only()
-    async def testing123(self, ctx):
-        print(ctx.message.author.voice)
-        discordget = ctx.guild.get_channel(507052685170704399)
-        print(discordget)
-
-    @commands.command()
-    @commands.guild_only()
     async def suggest(self, ctx, *, suggestion):
         devServer = discord.utils.get(self.bot.guilds, id=507052685170704394)
         sugChannel = discord.utils.get(
             devServer.channels, id=522618999830478848)
-        message = ":white_check_mark: your suggestion has been sent through to the development team, please wait for their verdict."
+        message = ":white_check_mark: Thanks for suggesting! Your suggestion has been sent through the voting process and the verdict will be verified within 24-72 hours."
         await ctx.send(message)
         await asyncio.sleep(3)
 

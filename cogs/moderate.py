@@ -21,8 +21,6 @@ class Moderate:
             await db.execute('INSERT INTO reports (user, date, body) VALUES ("{0}", "{1}", "{2}")'.format(user, d, reason))
             await db.commit()
 
-<<<<<<< Updated upstream
-=======
     async def reportquery(self, id):
         async with aiosqlite.connect('utils/bot.db') as db:
             db.row_factory = aiosqlite.Row
@@ -155,15 +153,12 @@ class Moderate:
             embed.add_field(name="Date:", value=f"{date}", inline=False)
             await ctx.send(embed=embed)
 
->>>>>>> Stashed changes
     @commands.command()
     @commands.guild_only()
     async def report(self, ctx, *, reason):
         user = ctx.author.id
         await self.reportinsert(user, reason)
         await ctx.send(":white_check_mark: Your report has been sent, it will be reviewed soon.")
-<<<<<<< Updated upstream
-=======
         await reportChat.send(embed=embed)
 
     @commands.command(aliases=['report-delete', 'report-remove', 'del-report'])
@@ -197,7 +192,6 @@ class Moderate:
                 await user.send(f"You have been given your first strike because: {reason}. If you would wish to know why speak to a Junior Staff Member.")
         else:
             await ctx.send("This server does not have the 'X' role.")
->>>>>>> Stashed changes
 
 
 def setup(bot):
