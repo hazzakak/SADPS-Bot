@@ -153,6 +153,7 @@ class Ranks:
 
     @commands.command(aliases=['rem-rank', 'remove', 'endrp'])
     @commands.guild_only()
+    @commands.has_any_role("Staff", "Trusted Player")
     async def remove_ranks(self, ctx, user: discord.Member = None):
         leo = discord.utils.get(ctx.guild.roles, name="Active Officer")
         leo_members = leo.members
@@ -162,55 +163,48 @@ class Ranks:
 
         civ = discord.utils.get(ctx.guild.roles, name="Active Civilian")
         civ_members = civ.members
-
-        dispatch = discord.utils.get(
-            ctx.guild.roles, name="Active Communicator")
-        dispatch_members = dispatch.members
         print("{} used the remove_ranks command".format(ctx.author))
-        if discord.utils.get(ctx.author.roles, name="Trusted Player") or discord.utils.get(ctx.author.roles, name="Staff"):
-            if user == None:
-                for civmember in civ_members:
-                    civilian = discord.utils.get(
-                        ctx.guild.members, id=civmember.id)
+        if user == None:
+            for civmember in civ_members:
+                civilian = discord.utils.get(
+                    ctx.guild.members, id=civmember.id)
 
-                    await civilian.remove_roles(civ)
+                await civilian.remove_roles(civ)
 
-                for leomember in leo_members:
-                    officer = discord.utils.get(
-                        ctx.guild.members, id=leomember.id)
+            for leomember in leo_members:
+                officer = discord.utils.get(
+                    ctx.guild.members, id=leomember.id)
 
-                    await officer.remove_roles(leo)
+                await officer.remove_roles(leo)
 
-                for emsmember in ems_members:
-                    medic = discord.utils.get(
-                        ctx.guild.members, id=emsmember.id)
+            for emsmember in ems_members:
+                medic = discord.utils.get(
+                    ctx.guild.members, id=emsmember.id)
 
-                    await medic.remove_roles(ems)
+                await medic.remove_roles(ems)
 
-                for dispatchmember in dispatch_members:
-                    dispatcher = discord.utils.get(
-                        ctx.guild.members, id=dispatchmember.id)
+            for dispatchmember in dispatch_members:
+                dispatcher = discord.utils.get(
+                    ctx.guild.members, id=dispatchmember.id)
 
-                    await dispatcher.remove_roles(dispatch)
+                await dispatcher.remove_roles(dispatch)
 
-                await ctx.send("All active roles have been removed.")
-            else:
-                if discord.utils.get(user.roles, name="Active Officer"):
-                    await user.remove_roles(leo, reason=None, atomic=True)
-                    await ctx.send("User's role has been removed.")
-                elif discord.utils.get(user.roles, name="Active Civilian"):
-                    await user.remove_roles(civ, reason=None, atomic=True)
-                    await ctx.send("User's role has been removed.")
-                elif discord.utils.get(user.roles, name="Active EMS"):
-                    await user.remove_roles(ems, reason=None, atomic=True)
-                    await ctx.send("User's role has been removed.")
-                elif discord.utils.get(user.roles, name="Active Communicator"):
-                    await user.remove_roles(dispatch, reason=None, atomic=True)
-                    await ctx.send("User's role has been removed.")
-                else:
-                    await ctx.send("User does not have any active roles.")
+            await ctx.send("All active roles have been removed.")
         else:
-            await ctx.send("Only a trusted player can do this!")
+            if discord.utils.get(user.roles, name="Active Officer"):
+                await user.remove_roles(leo, reason=None, atomic=True)
+                await ctx.send("User's role has been removed.")
+            elif discord.utils.get(user.roles, name="Active Civilian"):
+                await user.remove_roles(civ, reason=None, atomic=True)
+                await ctx.send("User's role has been removed.")
+            elif discord.utils.get(user.roles, name="Active EMS"):
+                await user.remove_roles(ems, reason=None, atomic=True)
+                await ctx.send("User's role has been removed.")
+            elif discord.utils.get(user.roles, name="Active Communicator"):
+                await user.remove_roles(dispatch, reason=None, atomic=True)
+                await ctx.send("User's role has been removed.")
+            else:
+                await ctx.send("User does not have any active roles.")
 
 
 def setup(bot):
